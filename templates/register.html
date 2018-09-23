@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Register
+{% endblock %}
+
+{% block main %}
+  <form class="needs-validation" action="/register" method="post">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" name="username" class="form-control" value="" placeholder="Username" required autofocus>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" name="password" class="form-control"  value="" placeholder="Password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}">
+      <small>Password must be 8-20 characters long, which contains at least one lowercase letter, one uppercase letter, one numeric digit, and one special character.</small>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-warning" type="reset">Clear All</button>
+      <button class="btn btn-primary" type="submit">Register</button>
+    </div>
+  </form>
+{% endblock %}

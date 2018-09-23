@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Search
+{% endblock %}
+
+{% block main %}
+  <form class="" action="/search" method="post">
+    <div class="form-group">
+      <label for="isbn">ISBN</label>
+      <input type="text" class="form-control" name="isbnQuery" value="" autofocus>
+    </div>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" name="titleQuery" value="">
+    </div>
+    <div class="fomr-group">
+      <label for="author">Author</label>
+      <input type="text" class="form-control" name="authorQuery" value="">
+    </div>
+    <button class="btn btn-primary my-3" type="submit">Search</button>
+  </form>
+
+  <div class="">
+    <ul>
+      {% for bookQueryResult in bookQueryResults %}
+        {% for key, val in bookQueryResult.items() %}
+          <li>{{ key }}: {{ val }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
