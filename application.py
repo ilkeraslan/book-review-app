@@ -16,8 +16,6 @@ if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
 
 # Configure session to use filesystem
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
@@ -58,7 +56,7 @@ def register():
         # Insert values provided to database
         password = generate_password_hash(request.form.get('password'))
         db.execute('INSERT INTO users (username, password) VALUES (:username, :password)', {"username": username, "password": password})
-        print(f"User {username} has been registered correctly.")
+        print('User has been registered correctly.')
         # Commit changes
         db.commit()
 
