@@ -16,8 +16,6 @@ if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
 
 # Configure session to use filesystem
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
@@ -58,7 +56,7 @@ def register():
         # Insert values provided to database
         password = generate_password_hash(request.form.get('password'))
         db.execute('INSERT INTO users (username, password) VALUES (:username, :password)', {"username": username, "password": password})
-        print(f"User {username} has been registered correctly.")
+        print('User has been registered correctly.')
         # Commit changes
         db.commit()
 
@@ -111,7 +109,7 @@ def login():
 
         # Redirect with success message
         flash('Successfully logged in!')
-        return redirect(url_for('index'))
+        return redirect(url_for('search'))
 
     # User reached route via GET
     else:
@@ -140,11 +138,17 @@ def search():
         titleQuery = request.form.get('titleQuery')
         authorQuery = request.form.get('authorQuery')
 
-        # Query db
-        rows = db.execute('SELECT * FROM books WHERE isbn = :isbn OR author = :author OR title = :title', {"isbn": isbnQuery, "author": authorQuery, "title": titleQuery})
-        print(rows)
+        # Check at least user provides a field for query
+        if not isbnQuery and not titleQuery and not authorQuery:
+            flash("You should provide at least 1 field.")
+            return redirect(url_for('search'))
 
-        bookQueryResults = [{'isbnResult': isbnQuery, 'titleResult': titleQuery, 'authorResult': authorQuery}]
+        # Query db (TO DO!!!)
+        rows = db.execute('SELECT * FROM books WHERE isbn LIKE :isbn OR author LIKE :author OR title LIKE :title LIMIT 10', {"isbn": isbnQuery, "author": authorQuery, "title": titleQuery}).fetchall()
+
+        bookQueryResults = []
+        for row in rows:
+            bookQueryResults.append({'isbnResult': row.isbn, 'titleResult': row.title, 'authorResult': row.author})
         # for key, value in bookQueryResults.items():
         #     print(key, value)
 
