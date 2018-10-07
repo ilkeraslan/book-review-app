@@ -158,8 +158,17 @@ def search():
             authorQuery = '%' + authorQuery + '%'
 
         # Query db
-        rows = db.execute('SELECT * FROM books WHERE isbn ILIKE :isbn OR author ILIKE :author OR title ILIKE :title LIMIT 10', {"isbn": isbnQuery, "author": authorQuery, "title": titleQuery}).fetchall()
+        rows = db.execute('SELECT * FROM books WHERE isbn ILIKE :isbn OR \
+                           author ILIKE :author OR title ILIKE :title LIMIT \
+                           10', {"isbn": isbnQuery, "author": authorQuery, \
+                           "title": titleQuery}).fetchall()
 
+        # Check if we have any match, if not flash and redirect to search page
+        if len(rows) is 0:
+            flash("No match. Please search again.")
+            return redirect(url_for('search'))
+
+        # Declare a list and for each row append it to that list as a dict object
         bookQueryResults = []
         for row in rows:
             bookQueryResults.append({'isbnResult': row.isbn, 'titleResult': row.title, 'authorResult': row.author})
