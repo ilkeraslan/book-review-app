@@ -27,6 +27,9 @@
         {% for key, val in bookQueryResult.items() %}
           <li>{{ key }}: {{ val }}</li>
         {% endfor %}
+        <form action="{{ url_for('book', isbn_num = bookQueryResult['isbn']) }}" method="post">
+          <input type="submit" value="More info about the book">
+         </form>
         <br>
       {% endfor %}
     </ul>

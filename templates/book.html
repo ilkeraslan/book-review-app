@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Book
+{% endblock %}
+
+{% block main %}
+  <div class="">
+    <ul>
+      {% for key, val in book.items() %}
+        <li>{{ key }}: {{ val }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

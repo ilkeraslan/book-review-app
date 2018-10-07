@@ -8,7 +8,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required
+from helpers import login_required, get_book
 
 
 app = Flask(__name__)
@@ -178,3 +178,10 @@ def search():
     # User reached route via GET
     else:
         return render_template('search.html')
+
+
+@app.route('/book/<isbn_num>')
+def book(isbn_num):
+    book = get_book(isbn_num)
+
+    return render_template('book.html', book = book)
