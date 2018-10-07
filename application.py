@@ -8,6 +8,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from helpers import login_required
+
 
 app = Flask(__name__)
 
@@ -104,8 +106,8 @@ def login():
             flash('Wrong password.')
             return redirect(url_for('login'))
 
-        # Remember username for that session
-        session['username'] = request.form['username']
+        # Remember user id for that session
+        session['user_id'] = rows[0]['id']
 
         # Redirect with success message
         flash('Successfully logged in!')
@@ -129,6 +131,7 @@ def logout():
 
 
 @app.route('/search', methods=['GET', 'POST'])
+@login_required
 def search():
     """Enable the user to search ISBN, title or author of a book and show results."""
 

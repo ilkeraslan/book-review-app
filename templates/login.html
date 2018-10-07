@@ -16,6 +16,11 @@
       <input type="password" id="loginPassword" class="form-control" name="password" value="" required>
       <div class="invalid-feedback">You must provide a valid password.</div>
     </div>
+    <!-- Hidden input for decorator function to remember the next url -->
+    <!-- http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/ -->
+    <div class="form-group">
+      <input type="hidden" value="{{ request.args.get('next', '') }}"/>
+    </div>
     <button class="btn btn-primary" type="submit">Login</button>
   </form>
 {% endblock %}
