@@ -143,14 +143,23 @@ def search():
             flash("You should provide at least 1 field.")
             return redirect(url_for('search'))
 
-        # Query db (TO DO!!!)
-        rows = db.execute('SELECT * FROM books WHERE isbn LIKE :isbn OR author LIKE :author OR title LIKE :title LIMIT 10', {"isbn": isbnQuery, "author": authorQuery, "title": titleQuery}).fetchall()
+        # Added '%' wildcards for PostgreSQL ILIKE pattern matching
+        # Additional info on: https://www.postgresql.org/docs/9.3/static/functions-matching.html
+        if isbnQuery:
+            isbnQuery = '%' + isbnQuery + '%'
+
+        if titleQuery:
+            titleQuery = '%' + titleQuery + '%'
+
+        if authorQuery:
+            authorQuery = '%' + authorQuery + '%'
+
+        # Query db
+        rows = db.execute('SELECT * FROM books WHERE isbn ILIKE :isbn OR author ILIKE :author OR title ILIKE :title LIMIT 10', {"isbn": isbnQuery, "author": authorQuery, "title": titleQuery}).fetchall()
 
         bookQueryResults = []
         for row in rows:
             bookQueryResults.append({'isbnResult': row.isbn, 'titleResult': row.title, 'authorResult': row.author})
-        # for key, value in bookQueryResults.items():
-        #     print(key, value)
 
         return render_template('search.html', bookQueryResults = bookQueryResults)
 
