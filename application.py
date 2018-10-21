@@ -193,6 +193,7 @@ def book(isbn_num):
 
     # Use Goodreads API
     res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "ysXwcDBjebzhUu0ZZtGkQ", "isbns": isbn_num})
-    print(res.json())
+    res_json = (res.json()['books'][0])
+    print(res_json)
 
-    return render_template('book.html', book = book)
+    return render_template('book.html', book = book, book_json = res_json)
