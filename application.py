@@ -180,7 +180,7 @@ def search():
         return render_template('search.html')
 
 
-@app.route('/book/<isbn_num>')
+@app.route('/book/<isbn_num>', methods=('POST',))
 def book(isbn_num):
     book = get_book(isbn_num)
 
