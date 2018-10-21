@@ -191,9 +191,8 @@ def book(isbn_num):
     # Use helper function `get_book()` to store results in book
     book = get_book(isbn_num)
 
-    # Use Goodreads API
+    # Use Goodreads API https://www.goodreads.com/api
     res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "ysXwcDBjebzhUu0ZZtGkQ", "isbns": isbn_num})
     res_json = (res.json()['books'][0])
-    print(res_json)
 
     return render_template('book.html', book = book, book_json = res_json)
