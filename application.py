@@ -1,4 +1,5 @@
 import os
+import requests
 
 from flask import Flask, flash, jsonify, render_template, redirect, request, session, url_for
 from flask_session import Session
@@ -189,5 +190,9 @@ def book(isbn_num):
 
     # Use helper function `get_book()` to store results in book
     book = get_book(isbn_num)
+
+    # Use Goodreads API
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "ysXwcDBjebzhUu0ZZtGkQ", "isbns": isbn_num})
+    print(res.json())
 
     return render_template('book.html', book = book)
