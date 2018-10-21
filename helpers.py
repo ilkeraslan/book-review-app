@@ -34,9 +34,7 @@ def get_book(isbn_num):
     """
 
     # Query db and store the result into book variable
-    row = db.execute(
-        'SELECT * FROM books WHERE isbn = :isbn', {'isbn': isbn_num}
-    ).fetchone()
+    row = db.execute('SELECT * FROM books WHERE isbn = :isbn', {'isbn': isbn_num}).fetchone()
 
     # If no result, abort with 404 error
     if row is None:

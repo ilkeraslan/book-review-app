@@ -182,6 +182,12 @@ def search():
 
 @app.route('/book/<isbn_num>', methods=('POST',))
 def book(isbn_num):
+
+    # Ensure that user reached route via POST
+    if request.method != 'POST':
+        abort(405, "You can't reach this route with GET request!")
+
+    # Use helper function `get_book()` to store results in book
     book = get_book(isbn_num)
 
     return render_template('book.html', book = book)
