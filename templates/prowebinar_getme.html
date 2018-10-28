@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  ProWebinar
+{% endblock %}
+
+{% block main %}
+<div class="">
+  <h3>GetMe Results</h3>
+  <ul>
+    {% for key, val in response.items() %}
+      <li>{{ key }}: {{ val }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

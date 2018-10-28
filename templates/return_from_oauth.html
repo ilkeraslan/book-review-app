@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Return from oAuth
+{% endblock %}
+
+{% block main %}
+  <div class="">
+    <h3>Access Token Results</h3>
+    <ul>
+      {% for key, val in response.items() %}
+        <li>{{ key }}: {{ val }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="">
+    <h3>Go back to ProWebinar</h3>
+    <form class="" action="{{ url_for('prowebinar') }}" method="post">
+      <input type="hidden" name="access_token" value="{{ response['access_token'] }}">
+      <input type="submit" name="" value="Go Back">
+    </form>
+  </div>
+{% endblock %}

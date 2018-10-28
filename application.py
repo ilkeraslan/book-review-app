@@ -196,3 +196,83 @@ def book(isbn_num):
     res_json = (res.json()['books'][0])
 
     return render_template('book.html', book = book, book_json = res_json)
+
+
+@app.route('/prowebinar', methods=['GET', 'POST'])
+def prowebinar():
+    # Passed the access_token through return_from_oauth form
+    auth_access_token = request.form.get('access_token')
+    return render_template('prowebinar.html', auth_access_token=auth_access_token)
+
+
+@app.route('/create_webinar', methods=['GET', 'POST'])
+def create_webinar():
+    if request.method == 'POST':
+        auth_access_token = request.form.get('authAccessToken')
+        subject = request.form.get('create_subject')
+        description = request.form.get('create_description')
+        startTime = request.form.get('startTime')
+        endTime = request.form.get('endTime')
+
+        url = 'https://api.getgo.com/G2W/rest/v2/organizers/3793328697070057484/webinars'
+
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': auth_access_token,
+        }
+
+        data = '{\n"subject": subject,\n"description": description,\n"times": [{"startTime": startTime, "endTime": endTime}],\n"timeZone": "GMT+01:00",\n"type": "single_session"\n}'
+
+        response = requests.post(url, headers=headers, data=data)
+        #print(response.json())
+        res = response.json()
+
+        return redirect(url_for('create_webinar'), response=res)
+
+    else:
+        return render_template(url_for('create_webinar'))
+
+
+@app.route('/return/from/oauth')
+def return_from_oauth():
+
+    # Get the code returned from oAuth to pass it into post request
+    oauth_code = request.args.get('code')
+    # print(request.args.get('code'))
+    # print oauth_code
+
+    headers = {
+    'Authorization': 'Basic aXRGZHlKVFExMzdHallHbENMNUViN1BBSUpQSTBOODE6emRyR3JLWHZ3cEo5UGRSTg==',
+    'Accept': 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    }
+
+    data = {
+      'grant_type': 'authorization_code',
+      'code': oauth_code,
+      'redirect_uri': 'http://127.0.0.1:5000/return/from/oauth'
+    }
+
+    response = requests.post('https://api.getgo.com/oauth/v2/token', headers=headers, data=data)
+    res = response.json()
+
+    flash('Successfully authenticated!')
+
+    return render_template('return_from_oauth.html', response = res)
+
+
+@app.route('/prowebinar/getme')
+def getme():
+
+    headers = {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer 0RBV6ayAA9AgGQ0t5GS2de6xytqT',
+    }
+
+    response = requests.get('https://api.getgo.com/admin/rest/v1/me', headers=headers)
+
+    res = response.json()
+    print(res)
+
+    return render_template('prowebinar_getme.html', response = res)
