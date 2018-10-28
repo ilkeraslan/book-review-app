@@ -23,18 +23,25 @@
       </div>
       <div class="form-group">
         <label for="startDate">Start Date</label>
-        <input type="date" class="form-control" name="startTime" value="">
+        <input type="date" class="form-control" name="create_startDate" value="" min="2018-10-28" max="2019-10-28">
+      </div>
+      <div class="form-group">
         <label for="endDate">End Date</label>
-        <input type="date" class="form-control" name="endTime" value="">
+        <input type="date" class="form-control" name="create_endDate" value="" min="2018-10-28" max="2019-10-28">
       </div>
       <div class="form-group">
         <label for="startTime">Start Time</label>
-        <input type="time" class="form-control" name="startTime" value="">
+        <input type="time" class="form-control" name="create_startTime" value="" min="00:00" max="23:59">
+      </div>
+      <div class="form-group">
         <label for="endTime">End Time</label>
-        <input type="time"class="form-control" name="endTime" value="">
+        <input type="time"class="form-control" name="create_endTime" value="" min="00:00" max="23:59">
       </div>
       <div class="">
         <input type="hidden" name="authAccessToken" value="{{ auth_access_token }}">
+      </div>
+      <div class="">
+        <input type="hidden" name="organizer_key" value="{{ organizer_key }}">
       </div>
       <button class="btn btn-primary my-3" type="submit">Create</button>
     </form>

@@ -17,6 +17,7 @@
     <h3>Go back to ProWebinar</h3>
     <form class="" action="{{ url_for('prowebinar') }}" method="post">
       <input type="hidden" name="access_token" value="{{ response['access_token'] }}">
+      <input type="hidden" name="organizer_key" value="{{ response['organizer_key'] }}">
       <input type="submit" name="" value="Go Back">
     </form>
   </div>

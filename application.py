@@ -14,9 +14,13 @@ from helpers import login_required, get_book
 
 app = Flask(__name__)
 
-# Check for environment variable
+# Check for environment variable for database
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
+
+# Check for environment varible for Goodreads API
+if not os.getenv("GOODREADS_KEY"):
+    raise RuntimeError("GOODREADS_KEY is not set")
 
 # Configure session to use filesystem
 app.config["SESSION_TYPE"] = "filesystem"
@@ -25,6 +29,10 @@ Session(app)
 # Set up database
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
+
+# Ask for Goodreads Key
+gr = os.getenv("GOODREADS_KEY")
+goodreads_key = scoped_session(sessionmaker(bind=gr))
 
 
 @app.route('/')
@@ -192,7 +200,7 @@ def book(isbn_num):
     book = get_book(isbn_num)
 
     # Use Goodreads API https://www.goodreads.com/api
-    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "ysXwcDBjebzhUu0ZZtGkQ", "isbns": isbn_num})
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": goodreads_key, "isbns": isbn_num})
     res_json = (res.json()['books'][0])
 
     return render_template('book.html', book = book, book_json = res_json)
@@ -202,19 +210,26 @@ def book(isbn_num):
 def prowebinar():
     # Passed the access_token through return_from_oauth form
     auth_access_token = request.form.get('access_token')
-    return render_template('prowebinar.html', auth_access_token=auth_access_token)
+    organizer_key = request.form.get('organizer_key')
+    return render_template('prowebinar.html', auth_access_token=auth_access_token, organizer_key=organizer_key)
 
 
 @app.route('/create_webinar', methods=['GET', 'POST'])
 def create_webinar():
     if request.method == 'POST':
         auth_access_token = request.form.get('authAccessToken')
+        organizer_key = request.form.get('organizer_key')
         subject = request.form.get('create_subject')
         description = request.form.get('create_description')
-        startTime = request.form.get('startTime')
-        endTime = request.form.get('endTime')
+        startDate = request.form.get('create_startDate')
+        endDate = request.form.get('create_endDate')
+        startTime = request.form.get('create_startTime')
+        endTime = request.form.get('create_endTime')
 
-        url = 'https://api.getgo.com/G2W/rest/v2/organizers/3793328697070057484/webinars'
+        startDateTime = startDate + 'T' + startTime + ':00Z'
+        endDateTime = endDate + 'T' + endTime + ':00Z'
+
+        url = 'https://api.getgo.com/G2W/rest/v2/organizers/' + organizer_key + '/webinars'
 
         headers = {
             'Content-Type': 'application/json',
@@ -222,16 +237,17 @@ def create_webinar():
             'Authorization': auth_access_token,
         }
 
-        data = '{\n"subject": subject,\n"description": description,\n"times": [{"startTime": startTime, "endTime": endTime}],\n"timeZone": "GMT+01:00",\n"type": "single_session"\n}'
+        data = '{\n"subject": "' + subject + '",\n"description": "' + description + '",\n"times": [\n{\n"startTime": "' + startDateTime + '", \n"endTime": "' + endDateTime + '"\n}\n],\n"timeZone": "GMT+01:00",\n"type": "single_session"\n}'
 
         response = requests.post(url, headers=headers, data=data)
-        #print(response.json())
+        print(response)
+        print(response.json())
         res = response.json()
 
-        return redirect(url_for('create_webinar'), response=res)
+        return render_template('create_webinar.html', response=res)
 
     else:
-        return render_template(url_for('create_webinar'))
+        return render_template('create_webinar.html')
 
 
 @app.route('/return/from/oauth')
