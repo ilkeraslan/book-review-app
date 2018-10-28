@@ -1,17 +1,16 @@
 {% extends "layout.html" %}
 
 {% block title %}
-  ProWebinar Create
+  ProWebinar Add Registrant
 {% endblock %}
 
 {% block main %}
 <div class="">
-  <h3>Create Webinar Results</h3>
+  <h3>Add Registrant Results</h3>
   <ul>
     {% for key, val in response.items() %}
       <li>{{ key }}: {{ val }}</li>
     {% endfor %}
   </ul>
-  <a href="https://attendee.gotowebinar.com/register/{{ response['webinarKey'] }}">Register For Webinar</a>
 </div>
 {% endblock %}

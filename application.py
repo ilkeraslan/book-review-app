@@ -250,6 +250,46 @@ def create_webinar():
         return render_template('create_webinar.html')
 
 
+@app.route('/get_webinars')
+def get_webinars():
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': 'O0KAMlUisOiG9eqyfLyVlpQG9lOv',
+    }
+
+    params = (
+        ('fromTime', '2018-07-13T10:00:00Z'),
+        ('toTime', '2018-12-30T23:59:00Z'),
+        ('size', '100'),
+    )
+
+    response = requests.get('https://api.getgo.com/G2W/rest/v2/accounts/4564227092871728645/webinars', headers=headers, params=params)
+    res = (response.json())['_embedded']['webinars']
+
+    return render_template('get_webinars.html', response=res)
+
+
+@app.route('/add_registrant')
+def add_registrant():
+    headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/vnd.citrix.g2wapi-v1.1+json',
+    'Authorization': 'nLUXYfKueLy3PAINr4qd5WWWY6jL',
+    }
+
+    params = (
+        ('resendConfirmation', 'false'),
+    )
+
+    data = '{\n  "firstName": "John",\n  "lastName": "Doe",\n  "email": "johndoe@test.com",\n  "organization": "Company that doesn\'t exist",\n  "jobTitle": "Manager",\n}'
+
+    response = requests.post('https://api.getgo.com/G2W/rest/v2/organizers/3793328697070057484/webinars/687419462163600653/registrants', headers=headers, params=params, data=data)
+    print(response.json())
+    res = response.json()
+
+    return render_template('add_registrant.html', response=res)
+
+
 @app.route('/return/from/oauth')
 def return_from_oauth():
 
