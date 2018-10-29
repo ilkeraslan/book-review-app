@@ -26,8 +26,9 @@
 *.log
 *.sql
 *.sqlite
-/flask_session/
+/flask_session
 /__pycache__
+/Requests
 
 # OS generated files #
 ######################
