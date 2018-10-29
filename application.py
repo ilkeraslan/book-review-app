@@ -74,7 +74,7 @@ def register():
         # Remember username for that session
         session['username'] = request.form['username']
         flash('Successfully registered.')
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
 
     # User reached route via GET
     else:
@@ -116,7 +116,7 @@ def login():
             return redirect(url_for('login'))
 
         # Remember user id for that session
-        session['user_id'] = rows[0]['id']
+        session['user_id'] = rows[0]['user_id']
 
         # Redirect with success message
         flash('Successfully logged in!')
@@ -199,8 +199,13 @@ def book(isbn_num):
     # Use helper function `get_book()` to store results in book
     book = get_book(isbn_num)
 
-    # Use Goodreads API https://www.goodreads.com/api
-    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": goodreads_key, "isbns": isbn_num})
-    res_json = (res.json()['books'][0])
+    # Use helper function `get_reviews()` to store review results of that book
+    # TODO
+    # reviews = get_reviews(isbn_num)
 
-    return render_template('book.html', book = book, book_json = res_json)
+
+    # Use Goodreads API https://www.goodreads.com/api
+    goodreads_response = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": goodreads_key, "isbns": isbn_num})
+    goodreads_json = (goodreads_response.json()['books'][0])
+
+    return render_template('book.html', book = book, book_json = goodreads_json)
