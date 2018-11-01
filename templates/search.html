@@ -24,9 +24,9 @@
   <div class="">
     <ul>
       {% for bookQueryResult in bookQueryResults %}
-        {% for key, val in bookQueryResult.items() %}
-          <li>{{ key }}: {{ val }}</li>
-        {% endfor %}
+          <li>ISBN: {{ bookQueryResult['isbnResult'] }}</li>
+          <li>Title: {{ bookQueryResult['titleResult'] }}</li>
+          <li>Author: {{ bookQueryResult['authorResult'] }}</li>
         <!-- Button to redirect user to book page -->
         <!-- Passes isbn number as argument via POST request -->
         <form action="{{ url_for('book', isbn_num = bookQueryResult['isbnResult']) }}" method="post">

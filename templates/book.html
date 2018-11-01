@@ -8,10 +8,16 @@
   <div class="">
     <h3>Database Results</h3>
     <ul>
-      {% for key, val in book.items() %}
-        <li>{{ key }}: {{ val }}</li>
-      {% endfor %}
+      <li>ISBN: {{ book['isbn'] }}</li>
+      <li>Title: {{ book['title'] }}</li>
+      <li>Author: {{ book['author'] }}</li>
+      <li>Date: {{ book['year'] }}</li>
     </ul>
+  </div>
+  <div class="">
+    <form class="" action="{{ url_for('search') }}" method="get">
+      <input type="submit" value="Not looking for that book? Search another one.">
+    </form>
   </div>
   <br>
   <div class="">
@@ -23,6 +29,20 @@
   </div>
   <div class="">
     <h3>Reviews</h3>
+    {% if reviews is not iterable %}
+    <p>No review. Write the first review for this book!</p>
+    {% else %}
+    <ul>
+      {% for review in reviews %}
+        <li>Review by: {{ review['username'] }}</li>
+        <li>Rating: {{ review['rating'] }}</li>
+        {% if review['text_review'] is not sameas '' %}
+          <li>Review text: {{ review['text_review'] }}</li>
+        {% endif %}
+        <br>
+      {% endfor %}
+    </ul>
+    {% endif %}
   </div>
   <div class="">
     <h3>Write a review</h3>
@@ -37,7 +57,4 @@
     </form>
   </div>
   <br>
-  <form class="" action="{{ url_for('search') }}" method="get">
-    <input type="submit" value="Search for another book">
-  </form>
 {% endblock %}

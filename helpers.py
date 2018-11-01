@@ -51,10 +51,55 @@ def get_book(isbn_num):
     return book
 
 
+#Helper function to verify if a user has commented on a book or not
 def userHasCommented(user_id, isbn_num):
+    """
+    Verifies if a user has commented on a book or not.
+    Accepts the id of that user and the isbn number of that book.
+    Returns boolean (true/false)
+    """
     row = db.execute('SELECT * FROM reviews WHERE (isbn = :isbn) AND  (user_id = :user_id)', {"isbn": isbn_num, "user_id": user_id}).fetchall()
 
     if len(row) == 0:
         return False
     else:
         return True
+
+
+# Helper function to get reviews for a specific book
+def get_reviews(isbn_num):
+    """
+    Gets reviews of a book and returns as a dict object
+    """
+    rows = db.execute('SELECT * FROM reviews WHERE (isbn = :isbn)', {"isbn": isbn_num}).fetchall()
+    reviews = []
+
+    # If no review exists, return None
+    if len(rows) == 0:
+        return None
+    else:
+        # Push it to list with a foreach loop
+        for row in rows:
+            reviews.append({
+                'review_id': row.review_id,
+                'isbn': row.isbn,
+                'user_id': row.user_id,
+                'username': get_username(row.user_id),
+                'rating': row.rating,
+                'text_review': row.text_review,
+            })
+        return reviews
+
+
+# Helper function to get username
+def get_username(user_id):
+    """
+    Returns username from db
+    """
+    row = db.execute('SELECT * FROM users WHERE user_id = :user_id', {"user_id": user_id}).fetchone()
+    if len(row) is 0:
+         username = 'No such user!'
+         return username
+    else:
+        username = row.username
+        return username
