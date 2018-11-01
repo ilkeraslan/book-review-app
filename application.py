@@ -9,7 +9,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required, get_book
+from helpers import login_required, get_book, userHasCommented
 
 
 app = Flask(__name__)
@@ -70,6 +70,8 @@ def register():
         print('User has been registered correctly.')
         # Commit changes
         db.commit()
+        # Close connection
+        db.close()
 
         # Remember username for that session
         session['username'] = request.form['username']
@@ -189,23 +191,55 @@ def search():
         return render_template('search.html')
 
 
-@app.route('/book/<isbn_num>', methods=('POST',))
+@app.route('/book/<isbn_num>', methods=['GET', 'POST'])
 def book(isbn_num):
-
-    # Ensure that user reached route via POST
-    if request.method != 'POST':
-        abort(405, "You can't reach this route with GET request!")
 
     # Use helper function `get_book()` to store results in book
     book = get_book(isbn_num)
-
-    # Use helper function `get_reviews()` to store review results of that book
-    # TODO
-    # reviews = get_reviews(isbn_num)
-
 
     # Use Goodreads API https://www.goodreads.com/api
     goodreads_response = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": goodreads_key, "isbns": isbn_num})
     goodreads_json = (goodreads_response.json()['books'][0])
 
-    return render_template('book.html', book = book, book_json = goodreads_json)
+    # User reached route via POST
+    if request.method == 'POST':
+
+        # Use helper function `get_reviews()` to store review results of that book
+        # TODO
+        # reviews = get_reviews(isbn_num)
+
+        numRating = request.form.get('reviewStar')
+        textRating = request.form.get('reviewText')
+        if (numRating is not None or textRating is not None):
+            # If user has not submitted a number rating, assign 5 as default
+            if numRating is '':
+                numRating = 5
+                numRating = int(numRating)
+            else:
+                numRating = int(numRating)
+
+            # Get isbn and user_id
+            if (session['user_id'] is None):
+                print("You have to log in to submit a review")
+                return redirect(url_for('login'))
+            else:
+                user_id = session['user_id']
+
+            # Check user_id from the database to ensure that user has not submitted another review for that book
+            hasCommented = userHasCommented(user_id, isbn_num)
+            print(hasCommented)
+            if (hasCommented is True):
+                print("You have already submitted a comment for that book!")
+                flash("You have already submitted a comment for that book!")
+                return redirect(url_for('search'))
+            else:
+                # Insert into database
+                comment = db.execute('INSERT INTO reviews (isbn, user_id, rating, text_review) VALUES (:isbn, :user_id, :rating, :text_review)', {"isbn": isbn_num, "user_id": user_id, "rating": numRating, "text_review": textRating})
+                db.commit()
+                db.close()
+                # Give feedback to user
+                flash("Submitted your comment!")
+        return render_template('book.html', isbn_num=isbn_num, book=book, book_json=goodreads_json)
+    else:
+        flash("GET Method Not Allowed!")
+        return redirect(url_for('search'))

@@ -49,3 +49,12 @@ def get_book(isbn_num):
     }
 
     return book
+
+
+def userHasCommented(user_id, isbn_num):
+    row = db.execute('SELECT * FROM reviews WHERE (isbn = :isbn) AND  (user_id = :user_id)', {"isbn": isbn_num, "user_id": user_id}).fetchall()
+
+    if len(row) == 0:
+        return False
+    else:
+        return True
