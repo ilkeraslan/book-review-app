@@ -3,10 +3,12 @@
 Web Programming with Python and JavaScript
 
 Includes:
-- Templating with jinja2
+- Backend with Python
 - Flask framework
+- Templating with jinja2
 - PostgreSQL
 - Basic JavaScript functionality
-- Backend with Python
+- Bootstrap 4.1
 - Basic server configuration with Heroku
 - API usage with Goodreads
+- Building an API route for developers

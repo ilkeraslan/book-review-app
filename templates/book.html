@@ -16,7 +16,9 @@
   </div>
   <div class="">
     <form class="" action="{{ url_for('search') }}" method="get">
-      <input type="submit" value="Not looking for that book? Search another one.">
+      <div class="form-group">
+        <input type="submit" class="form-control" value="Not looking for that book? Search another one.">
+      </div>
     </form>
   </div>
   <br>
@@ -48,10 +50,12 @@
     <h3>Write a review</h3>
     <form class="" action="{{ url_for('book', isbn_num = book['isbn']) }}" method="post">
       <div class="form-group">
-        <input type="number" name="reviewStar" placeholder="5" min="1" max="5" value="5">
+        <label for="yourRating">Your Rating</label>
+        <input class="form-control" type="number" name="reviewStar" placeholder="5" min="1" max="5" value="5">
       </div>
       <div class="form-group">
-        <textarea name="reviewText" rows="4" cols="50" placeholder="Provide more details about your review here." maxlength="250"></textarea>
+        <label for="yourReview">Your Review</label>
+        <textarea class="form-control" name="reviewText" rows="4" placeholder="Provide more details about your review here." maxlength="250"></textarea>
       </div>
       <button class="btn btn-primary my-3" type="submit">Submit</button>
     </form>

@@ -18,7 +18,7 @@
       <label for="author">Author</label>
       <input type="text" class="form-control" name="authorQuery" value="">
     </div>
-    <button class="btn btn-primary my-3" type="submit">Search</button>
+      <button class="btn btn-primary my-3" type="submit">Search</button>
   </form>
 
   <div class="">
@@ -30,8 +30,10 @@
         <!-- Button to redirect user to book page -->
         <!-- Passes isbn number as argument via POST request -->
         <form action="{{ url_for('book', isbn_num = bookQueryResult['isbnResult']) }}" method="post">
-          <input type="submit" value="More info about the book">
-         </form>
+          <div class="form-group">
+            <button class="btn btn-outline-secondary my-3" type="submit">More info about the book</button>
+          </div>
+        </form>
         <br>
       {% endfor %}
     </ul>
