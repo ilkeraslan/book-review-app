@@ -240,3 +240,26 @@ def book(isbn_num):
     else:
         flash("GET Method Not Allowed!")
         return redirect(url_for('search'))
+
+
+@app.route('/developer')
+def developer():
+    return render_template('developer.html')
+
+
+@login_required
+@app.route('/api/<isbn>')
+def api(isbn):
+    # Use helper functions to get info for building response
+    book = get_book(isbn)
+    reviews = get_reviews(isbn)
+    # api_response = {
+    #     "title": "Lorem",
+    #     "author": "ipsum"
+    # }
+
+    print(book)
+    print(reviews)
+    api_response = jsonify(book ,reviews)
+
+    return api_response

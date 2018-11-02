@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title%}
+  Developer
+{% endblock %}
+
+{% block main %}
+  <div class="">
+    <h3>API For Developers</h3>
+    <h4>Usage</h4>
+    <ul>
+      <li>Make a GET request to `/api/isbn`</li>
+      <li>Returns a JSON response</li>
+      <li>
+        Example of a response:
+        <ul>
+          <li>title: My Example Book</li>
+          <li>author: John Doe</li>
+          <li>year: 2050</li>
+          <li>isbn_number: 1234567M8</li>
+          <li>review_count: 350</li>
+          <li>average_score: 4.99</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+{% endblock %}
