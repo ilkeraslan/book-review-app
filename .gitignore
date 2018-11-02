@@ -28,7 +28,7 @@
 *.sqlite
 /flask_session
 /__pycache__
-/Requests
+/requests
 
 # OS generated files #
 ######################
