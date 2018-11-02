@@ -1,6 +1,5 @@
 asn1crypto==0.24.0
 blinker==1.4
-Brlapi==0.6.6
 certifi==2018.10.15
 chardet==3.0.4
 Click==7.0
