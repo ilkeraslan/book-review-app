@@ -46,7 +46,6 @@ SecretStorage==2.3.1
 simplejson==3.13.2
 six==1.11.0
 SQLAlchemy==1.2.12
-system-service==0.3
 systemd-python==234
 ubuntu-drivers-common==0.0.0
 ufw==0.35
