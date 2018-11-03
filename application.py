@@ -9,7 +9,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required, get_book, userHasCommented, get_reviews
+from helpers import login_required, get_book, userHasCommented, get_reviews, get_review_stats
 
 
 app = Flask(__name__)
@@ -252,14 +252,19 @@ def developer():
 def api(isbn):
     # Use helper functions to get info for building response
     book = get_book(isbn)
-    reviews = get_reviews(isbn)
-    # api_response = {
-    #     "title": "Lorem",
-    #     "author": "ipsum"
-    # }
-
-    print(book)
+    reviews = get_review_stats(isbn)
     print(reviews)
-    api_response = jsonify(book ,reviews)
+    # Store it in dict object
+    api_response = {
+        "isbn": book['isbn'],
+        "title": book['title'],
+        "author": book['author'],
+        "year": book['year']
+    }
+    if reviews is not None:
+        api_response['review_count'] = reviews['review_count']
+        api_response['average_score'] =  reviews['average_score']
+    # Convert it to JSON
+    api_response = jsonify(api_response)
 
     return api_response

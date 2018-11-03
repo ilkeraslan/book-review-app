@@ -91,6 +91,38 @@ def get_reviews(isbn_num):
         return reviews
 
 
+# Helper function to get review statistics
+def get_review_stats(isbn_num):
+    """
+    Calls get_reviews() function and returns a dict object
+    """
+    getReviewResults = get_reviews(isbn_num)
+    if getReviewResults is None:
+        return None
+    else:
+        avgScore = 0.0
+        reviewCount = 0
+        reviewSum = 0
+
+        # Loop through getReviewResults
+        for reviewResult in getReviewResults:
+            reviewSum += int(reviewResult['rating'])
+            reviewCount += 1
+        avgScore = float(reviewSum) / reviewCount
+        # Format for a width of 2 chars and a precision of 3 decimal places
+        # https://www.python.org/dev/peps/pep-0498/
+        avgScore = f'{avgScore:2.3}'
+
+        # Store it into reviewStats
+        reviewStats = {
+            "review_count": str(reviewCount),
+            "average_score": str(avgScore)
+        }
+
+    # Return reviewStats
+    return reviewStats
+
+
 # Helper function to get username
 def get_username(user_id):
     """

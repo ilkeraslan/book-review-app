@@ -6,59 +6,62 @@
 
 {% block main %}
   <div class="">
-    <h3>Database Results</h3>
-    <ul>
-      <li>ISBN: {{ book['isbn'] }}</li>
-      <li>Title: {{ book['title'] }}</li>
-      <li>Author: {{ book['author'] }}</li>
-      <li>Date: {{ book['year'] }}</li>
-    </ul>
-  </div>
-  <div class="">
-    <form class="" action="{{ url_for('search') }}" method="get">
-      <div class="form-group">
-        <button class="btn btn-outline-warning my-3" type="submit">Looking for another book?</button>
+    <div class="row">
+      <div class="">
+        <h3>Database Results</h3>
+        <ul>
+          <li>ISBN: {{ book['isbn'] }}</li>
+          <li>Title: {{ book['title'] }}</li>
+          <li>Author: {{ book['author'] }}</li>
+          <li>Date: {{ book['year'] }}</li>
+        </ul>
       </div>
-    </form>
-  </div>
-  <br>
-  <div class="">
-    <h3>Goodreads API Results</h3>
-    <ul>
-      <li>Rating count: {{ book_json['work_ratings_count'] }}</li>
-      <li>Average rating: {{ book_json['average_rating'] }}</li>
-    </ul>
-  </div>
-  <div class="">
-    <h3>Reviews</h3>
-    {% if reviews is not iterable %}
-    <p>No review. Write the first review for this book!</p>
-    {% else %}
-    <ul>
-      {% for review in reviews %}
-        <li>Review by: {{ review['username'] }}</li>
-        <li>Rating: {{ review['rating'] }}</li>
-        {% if review['text_review'] is not sameas '' %}
-          <li>Review text: {{ review['text_review'] }}</li>
-        {% endif %}
-        <br>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </div>
-  <div class="">
-    <h3>Write a review</h3>
-    <form class="" action="{{ url_for('book', isbn_num = book['isbn']) }}" method="post">
-      <div class="form-group">
-        <label for="yourRating">Your Rating</label>
-        <input class="form-control" type="number" name="reviewStar" placeholder="5" min="1" max="5" value="5">
+      <div class="">
+        <h3>Goodreads API Results</h3>
+        <ul>
+          <li>Rating count: {{ book_json['work_ratings_count'] }}</li>
+          <li>Average rating: {{ book_json['average_rating'] }}</li>
+        </ul>
       </div>
-      <div class="form-group">
-        <label for="yourReview">Your Review</label>
-        <textarea class="form-control" name="reviewText" rows="4" placeholder="Provide more details about your review here." maxlength="250"></textarea>
-      </div>
-      <button class="btn btn-primary my-3" type="submit">Submit</button>
-    </form>
+    </div>
+    <div class="">
+      <form class="" action="{{ url_for('search') }}" method="get">
+        <div class="form-group">
+          <button class="btn btn-outline-warning my-3" type="submit">Looking for another book?</button>
+        </div>
+      </form>
+    </div>
+    <div class="">
+      <h3>Reviews</h3>
+      {% if reviews is not iterable %}
+      <p>No review. Write the first review for this book!</p>
+      {% else %}
+      <ul>
+        {% for review in reviews %}
+          <li>Review by: {{ review['username'] }}</li>
+          <li>Rating: {{ review['rating'] }}</li>
+          {% if review['text_review'] is not sameas '' %}
+            <li>Review text: {{ review['text_review'] }}</li>
+          {% endif %}
+          <br>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    <div class="">
+      <h3>Write a review</h3>
+      <form class="" action="{{ url_for('book', isbn_num = book['isbn']) }}" method="post">
+        <div class="form-group">
+          <label for="yourRating">Your Rating</label>
+          <input class="form-control" type="number" name="reviewStar" placeholder="5" min="1" max="5" value="5">
+        </div>
+        <div class="form-group">
+          <label for="yourReview">Your Review</label>
+          <textarea class="form-control" name="reviewText" rows="4" placeholder="Provide more details about your review here." maxlength="250"></textarea>
+        </div>
+        <button class="btn btn-primary my-3" type="submit">Submit</button>
+      </form>
+    </div>
   </div>
   <br>
 {% endblock %}
