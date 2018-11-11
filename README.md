@@ -1,4 +1,4 @@
-# Project 1
+# Project Book Review APP
 
 Web Programming with Python and JavaScript
 
