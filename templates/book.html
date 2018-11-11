@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block main %}
-  <div class="">
+  <div class="container-fluid">
     <div class="row">
-      <div class="">
+      <div class="col-sm">
         <h3>Database Results</h3>
         <ul>
           <li>ISBN: {{ book['isbn'] }}</li>
@@ -16,7 +16,7 @@
           <li>Date: {{ book['year'] }}</li>
         </ul>
       </div>
-      <div class="">
+      <div class="col-sm">
         <h3>Goodreads API Results</h3>
         <ul>
           <li>Rating count: {{ book_json['work_ratings_count'] }}</li>
