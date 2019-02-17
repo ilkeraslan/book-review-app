@@ -4,11 +4,12 @@ blinker==1.4
 bottle==0.12.13
 Brlapi==0.6.6
 certifi==2018.10.15
+cffi==1.12.1
 chardet==3.0.4
 Click==7.0
 colorama==0.3.7
 command-not-found==0.3
-cryptography==2.1.4
+cryptography==2.5
 cupshelpers==1.0
 cycler==0.10.0
 defer==1.0.6
@@ -49,6 +50,7 @@ psycopg2==2.7.5
 psycopg2-binary==2.7.5
 pyasn1==0.4.2
 pycairo==1.16.2
+pycparser==2.19
 pycrypto==2.6.1
 pycryptodomex==3.4.7
 pycups==1.9.73
