@@ -1,6 +1,8 @@
 # Project Book Review APP
 
-Web Programming with Python and JavaScript
+## Web Programming with Python and JavaScript
+
+![Screenshot](https://github.com/Dement0/book-review-app/blob/master/static/book-review-pro.png)
 
 Includes:
 - Backend with Python
